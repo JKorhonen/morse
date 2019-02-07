@@ -1,4 +1,7 @@
 # Morse - English to Morse code converter
+[![Build Status](https://travis-ci.org/JKorhonen/morse-coder.svg?branch=master)](https://travis-ci.org/JKorhonen/morse-coder)
+
+
 Simple library that provides basic facilities to convert English text to morse code or vice versa.
 
 Currently the library have few limitations how you can convert Morse code to English. We assume that Morse Code is 
@@ -31,23 +34,3 @@ text2 = converter.morse_to_english(morse)
 print(text2)  # Output: H.E.L.L.O.,.W.O.R.L.D
 
 ```
-
-## Example use of software
-To use example CLI that demonstrates how morse library works: 
-```
-# morse <input_file> <output_file>
-morse-cli morse.txt english.txt
-```
-
-```
-morse.txt
-....-.-.----.-.-.-...
-```
-
-```
-english.txt
-S.O.S
-```
-
-## Installation instructions
-TODO
