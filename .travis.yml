@@ -1,3 +1,4 @@
+sudo: true
 langauge: python
 python:
   - 3.7
