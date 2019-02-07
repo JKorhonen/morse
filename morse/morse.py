@@ -143,6 +143,18 @@ class Morse:
             text = self.__get_char(result.captures("last_char")[0])
         return text
 
+    def is_morse_code(self, code: str) -> bool:
+        """
+        Check if given code morse code or not
+        :param code: Text to be analyzed
+        :return: True if represent morse code, othervise false
+        """
+        regex_str = "^[{}{}]+$".format(regex.escape(self.dot), regex.escape(self.dash))
+        pattern = regex.compile(regex_str)
+        if regex.match(pattern, code):
+            return True
+        return False
+
     def __create_validation_string(self) -> str:
         """
         Create validation regex string

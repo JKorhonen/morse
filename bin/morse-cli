@@ -3,57 +3,74 @@ import regex
 from morse import Morse
 
 
-def main():
-    """
-    Main function of
-    :return:
-    """
-    dot = '·'
-    dash = '-'
+def header():
+    print("MORSE-CLI, Version 1.0.0")
+    print("Convert English text to Morse code or vice versa")
+    print(" - We will detect your input format automatically")
+    # Ask input and output files
+    input_file = input(" - Input file: ")
+    output_file = input(" - Output file: ")
+    print("")
+    # Ask dot and dash
+    print("Give dot and dash characters for morse code, leave empty if use default")
+    dot = input(" - Dot(.): ")
+    if dot == "":
+        dot = '.'
+    dash = input(" - Dash(-): ")
+    if dash == "":
+        dash = "-"
+    print("")
+    # Create converter
+    converter = Morse(dot=dot, dash=dash)
 
-    print("MORSE-CLI VERSION 1.0.0\n")
-    input_file_name = input("Input file: ")
-    output_file_name = input("Output file: ")
-    # Let's remove whitespace
-    print("\nProcessing input file...")
+    return input_file, output_file, converter
+
+
+def process_input(file: str, converter: Morse) -> str:
+    print("Processing input file")
+    # Read file
     try:
-        with open(input_file_name, "r", encoding="utf-8") as fh:
-            # Read all data into string
-            input_data = fh.read().replace('\n', '')
-            # Remove whitespace
-            pattern = regex.compile(r"\s+")
-            input_data = regex.sub(pattern, '', input_data)
-            # Check if file is morse code and create output file
-            if dot == '.':
-                dot = r'\.'
-            if dash == '.':
-                dash = r'\.'
-            morse_pattern = regex.compile(r"["+dot+dash+"]+$")
-            converter = Morse(dot=dot, dash=dash)
-            if regex.match(morse_pattern, input_data):
-                print("Input type detected: Morse code")
-                try:
-                    data = converter.morse_to_english(input_data)
-                except ValueError:
-                    print("Invalid morse code")
-                    print("There should be a dot between chars and no two dots in a row")
-                    return 1
-            else:
-                print("Input type detected: English text")
-                try:
-                    data = converter.english_to_morse(input_data)
-                except ValueError:
-                    print("Text contains chars that doesn't have morse code")
-                    return 1
+        with open(file, "r", encoding="utf-8") as fh:
+            # Read data to string
+            data = fh.read()
     except FileNotFoundError:
-        print("File not found")
-        print("END\n")
-        return 2
+        print("ABORT: Input file not found")
+        exit(-1)
+    # Remove whitespace
+    pattern = regex.compile(r"\s+")
+    data = regex.sub(pattern, '', data)
+    if converter.is_morse_code(data):
+        print(" - Input type: Morse code")
+        try:
+            return converter.morse_to_english(data)
+        except ValueError:
+            print("ABORT: Invalid morse code")
+            print(" - There shall be a dot between characters")
+            print(" - There shall be no two dots in a row")
+            exit(-1)
+    else:
+        print(" - Input type: English text")
+        try:
+            return converter.english_to_morse(data)
+        except ValueError:
+            print("ABORT: Invalid characters in text")
+            print(" - Only english alphabets, digits and special characters .,?@ are allowed")
+            exit(-1)
 
-    with open(output_file_name, "w", encoding="utf-8") as fh:
+
+def main():
+    # Print header and ask input and output
+    input_file, output_file, converter = header()
+
+    # Process input
+    data = process_input(input_file, converter)
+    # Process output
+    print("Processing output file")
+    with open(output_file, "w", encoding="utf-8") as fh:
         # Write data to file
         fh.write(data)
-    print("\nDONE")
+    # Everything OK
+    print("Done")
     return 0
 
 
