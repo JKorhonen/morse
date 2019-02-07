@@ -100,32 +100,25 @@ class Morse:
                 raise ValueError("Invalid character")
         return morse
 
-    def morse_to_english(self, text_input: str) -> str:
+    def morse_to_english(self, code: str) -> str:
         """
         Convert morse code with next assumptions:
         1. Between characters there is one dot (.-.-.-)
         2. There cannot be two dots in row
-        :param text_input: morse code
+        :param code: morse code
         :return: plain english text
         """
         # Convert input to internal representation
-        if self.__class__._dash != self.dash:
-            text_input = text_input.replace(self.dash, self.__class__._dash)
-        if self.__class__._dot != self.dot:
-            text_input = text_input.replace(self.dot, self.__class__._dot)
+        code = self.__convert_to_internal(code)
 
-        # Check if dot
-        if text_input == '.-.-.-':
+        # Check if the input is a dot
+        if code == self.get_code('.'):
             return '.'
-        # build regex string
-        re_chars = "|".join(self.__class__._codes.values())
-        re_chars = re_chars.replace('|.-.-.-', '')  # Remove dot
-        re_str = "^(?:(?P<char>" + re_chars + ")(.-.-.-))*(?P<last_char>" + re_chars + ")$"
-        re_str = re_str.replace(r"|)", r")")
-        re_str = re_str.replace(r".", r"\.")
-        parser = regex.compile(re_str)
-        # Check that given input is valid
-        result = parser.match(text_input)
+
+        # Parse input string with regex
+        parser = regex.compile(self.__create_validation_string())
+        result = parser.match(code)
+
         if result is None:
             raise ValueError("Invalid morse code")
         # Start translate
@@ -137,3 +130,18 @@ class Morse:
         else:
             text = self.get_char(result.captures("last_char")[0])
         return text
+
+    def __create_validation_string(self) -> str:
+        dot = self.get_code('.')
+        chars = "|".join(self.__class__._codes.values())
+        chars = chars.replace('|{}'.format(dot), '')  # remove the dot from
+        regex_str = "^(?:(?P<char>" + chars + ")(" + dot +  "))*(?P<last_char>" + chars + ")$"
+        regex_str = regex_str.replace(".", r"\.")
+        return regex_str
+
+    def __convert_to_internal(self, code: str) -> str:
+        if self.dash != self.__class__._dash:
+            code = code.replace(self.dash, self.__class__._dash)
+        if self.dot != self.__class__._dot:
+            code = code.replace(self.dot, self.__class__._dot)
+        return code
