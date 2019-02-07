@@ -108,6 +108,12 @@ class Morse:
         :param text_input: morse code
         :return: plain english text
         """
+        # Convert input to internal representation
+        if self.__class__._dash != self.dash:
+            text_input = text_input.replace(self.dash, self.__class__._dash)
+        if self.__class__._dot != self.dot:
+            text_input = text_input.replace(self.dot, self.__class__._dot)
+
         # Check if dot
         if text_input == '.-.-.-':
             return '.'
