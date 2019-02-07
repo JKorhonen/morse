@@ -26,7 +26,8 @@ setuptools.setup(
         "pytest-runner"
     ],
     test_requires=[
-        "pytest"],
+        "pytest"
+    ],
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
