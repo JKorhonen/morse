@@ -160,11 +160,10 @@ class Morse:
         Create validation regex string
         :return: Return validation regex string
         """
-        dot = self.__get_code('.')
-        chars = "|".join(self.__class__._codes.values())
-        chars = chars.replace('|{}'.format(dot), '')  # remove the dot from
-        regex_str = "^(?:(?P<char>" + chars + ")(" + dot +  "))*(?P<last_char>" + chars + ")$"
-        regex_str = regex_str.replace(".", r"\.")
+        dot = regex.escape(self.__get_code('.'))
+        chars = "|".join(map(lambda x: regex.escape(x), self.__class__._codes.values()))
+        chars = chars.replace('|{}'.format(regex.escape(dot)), '')  # remove the dot from
+        regex_str = "^(?:(?P<char>" + chars + ")(" + dot + "))*(?P<last_char>" + chars + ")$"
         return regex_str
 
     def __convert_to_internal(self, code: str) -> str:
