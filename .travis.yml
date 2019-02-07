@@ -1,5 +1,7 @@
 langauge: python
 python:
   - 3.6
+install:
+  - pip3 install -e .
 script:
   - python3 setup.py test
