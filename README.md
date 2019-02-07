@@ -38,7 +38,7 @@ Declaration of methods that Morse class provides
 
 ### Character tools
 ```python
-def get_char(self, code: str) -> (str, None):
+def get_char(self, code: str) -> Optional[str]:
     """
     Get char from code
     :param code: Morse code in external format
@@ -47,7 +47,7 @@ def get_char(self, code: str) -> (str, None):
 ```
 
 ```python
-def get_code(self, char: str) -> (str, None):
+def get_code(self, char: str) -> Optional[str]:
     """
     Get morse code from char
     :param char: English char

@@ -1,3 +1,4 @@
+from typing import Optional
 import regex
 
 
@@ -49,7 +50,7 @@ class Morse:
     _dash = '-'
     _dot = '.'
 
-    def __init__(self, dash: str = '-', dot: str = '.') -> None:
+    def __init__(self, dash: str = '-', dot: str = '.'):
         """
         A Constructor
         :param dash: How to print dash
@@ -58,7 +59,7 @@ class Morse:
         self.dash = dash
         self.dot = dot
 
-    def get_code(self, char: str) -> (str, None):
+    def get_code(self, char: str) -> Optional[str]:
         """
         Get morse code from char
         :param char: English char
@@ -66,7 +67,7 @@ class Morse:
         """
         return self.__convert_to_external(self.__get_code(char))
 
-    def __get_code(self, char: str) -> (str, None):
+    def __get_code(self, char: str) -> Optional[str]:
         """
         Get morse code from char
         :param char: English char
@@ -76,7 +77,7 @@ class Morse:
             return self.__class__._codes[char.upper()]
         return None
 
-    def get_char(self, code: str) -> (str, None):
+    def get_char(self, code: str) -> Optional[str]:
         """
         Get char from code
         :param code: Morse code in external format
@@ -85,7 +86,7 @@ class Morse:
         code = self.__convert_to_internal(code)
         return self.__get_char(code)
 
-    def __get_char(self, code: str) -> (str, None):
+    def __get_char(self, code: str) -> Optional[str]:
         """
         Get char from code that is in internal format
         :param code: Morse code in internal format
