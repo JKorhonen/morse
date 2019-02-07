@@ -22,12 +22,6 @@ setuptools.setup(
     install_requires=[
         'regex'  # For better regex handling
     ],
-    setup_requires=[
-        "pytest-runner"
-    ],
-    test_requires=[
-        "pytest"
-    ],
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
