@@ -1,7 +1,5 @@
-dist: xenial
 langauge: python
 python:
   - 3.6
-  - 3.7-dev
 script:
   - python setup.py test
