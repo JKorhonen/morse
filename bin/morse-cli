@@ -28,6 +28,7 @@ def header():
 
 def process_input(file: str, converter: Morse) -> str:
     print("Processing input file")
+    data = ""
     # Read file
     try:
         with open(file, "r", encoding="utf-8") as fh:
