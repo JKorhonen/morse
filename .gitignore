@@ -1,0 +1,9 @@
+# Exclude compiled python modules
+*.pyc
+/*.egg-info
+
+# Exclude virtual environment
+/venv/
+
+# Exclude idea files
+/.idea/
