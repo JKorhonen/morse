@@ -2,7 +2,7 @@ import regex
 
 
 class Morse:
-    """A Class that contains information and facilities to work with morse codes"""
+    """A Class that contains information and facilities about morse codes"""
     _codes = {
         'A': '.-',
         'B': '-...',
@@ -65,17 +65,22 @@ class Morse:
         :return: string that represent a code
         """
         if char.upper() in self.__class__._codes:
-            return self.__class__._codes[char.upper()]
+            code = self.__class__._codes[char.upper()]
+            code = code.replace(self.__class__._dot, self.dot)
+            code = code.replace(self.__class__._dash, self.dash)
+            return code
         return None
 
-    def get_char(self, morse: str) -> (str, None):
+    def get_char(self, code: str) -> (str, None):
         """
         Get character from given morse code
         :param morse:
         :return:
         """
-        for char, code in self.__class__._codes.items():
-            if morse == code:
+        code = code.replace(self.dot, self.__class__._dot)
+        code = code.replace(self.dash, self.__class__._dash)
+        for char, code_i in self.__class__._codes.items():
+            if code == code_i:
                 return char
         return None
 
