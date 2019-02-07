@@ -64,36 +64,38 @@ class Morse:
         :param char: English letter, digit or symbol that have morse code
         :return: string that represent a code
         """
+        return self.__convert_to_external(self.__get_code(char))
+
+    def __get_code(self, char: str) -> (str, None):
         if char.upper() in self.__class__._codes:
-            code = self.__class__._codes[char.upper()]
-            code = code.replace(self.__class__._dot, self.dot)
-            code = code.replace(self.__class__._dash, self.dash)
-            return code
+            return self.__class__._codes[char.upper()]
         return None
 
     def get_char(self, code: str) -> (str, None):
         """
         Get character from given morse code
-        :param morse:
+        :param code:
         :return:
         """
-        code = code.replace(self.dot, self.__class__._dot)
-        code = code.replace(self.dash, self.__class__._dash)
+        code = self.__convert_to_internal(code)
+        return self.__get_char(code)
+
+    def __get_char(self, code: str) -> (str, None):
         for char, code_i in self.__class__._codes.items():
             if code == code_i:
                 return char
         return None
 
-    def english_to_morse(self, text_input: str) -> str:
+    def english_to_morse(self, text: str) -> str:
         """
         Convert english text to morse code.
-        :param text_input: text to be translated
+        :param text: text to be translated
         :return: string that contains morse code
         """
         # Return string
         morse = ""
-        for i in range(0, len(text_input)):
-            code = self.get_code(text_input[i])
+        for i in range(0, len(text)):
+            code = self.get_code(text[i])
             if code is not None:
                 morse += code
             else:
@@ -112,7 +114,7 @@ class Morse:
         code = self.__convert_to_internal(code)
 
         # Check if the input is a dot
-        if code == self.get_code('.'):
+        if code == self.__get_code('.'):
             return '.'
 
         # Parse input string with regex
@@ -123,16 +125,16 @@ class Morse:
             raise ValueError("Invalid morse code")
         # Start translate
         text = "."
-        chars = map(lambda x: self.get_char(x), result.captures("char"))
+        chars = map(lambda x: self.__get_char(x), result.captures("char"))
         text = text.join(chars)
         if text != "":
-            text += "." + self.get_char(result.captures("last_char")[0])
+            text += "." + self.__get_char(result.captures("last_char")[0])
         else:
-            text = self.get_char(result.captures("last_char")[0])
+            text = self.__get_char(result.captures("last_char")[0])
         return text
 
     def __create_validation_string(self) -> str:
-        dot = self.get_code('.')
+        dot = self.__get_code('.')
         chars = "|".join(self.__class__._codes.values())
         chars = chars.replace('|{}'.format(dot), '')  # remove the dot from
         regex_str = "^(?:(?P<char>" + chars + ")(" + dot +  "))*(?P<last_char>" + chars + ")$"
@@ -140,8 +142,15 @@ class Morse:
         return regex_str
 
     def __convert_to_internal(self, code: str) -> str:
-        if self.dash != self.__class__._dash:
-            code = code.replace(self.dash, self.__class__._dash)
         if self.dot != self.__class__._dot:
             code = code.replace(self.dot, self.__class__._dot)
+        if self.dash != self.__class__._dash:
+            code = code.replace(self.dash, self.__class__._dash)
+        return code
+
+    def __convert_to_external(self, code: str) -> str:
+        if self.dot != self.__class__._dot:
+            code = code.replace(self.__class__._dot, self.dot)
+        if self.dash != self.__class__._dash:
+            code = code.replace(self.__class__._dash, self.dash)
         return code
