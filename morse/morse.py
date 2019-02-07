@@ -162,7 +162,7 @@ class Morse:
         """
         dot = regex.escape(self.__get_code('.'))
         chars = "|".join(map(lambda x: regex.escape(x), self.__class__._codes.values()))
-        chars = chars.replace('|{}'.format(regex.escape(dot)), '')  # remove the dot from
+        chars = chars.replace('|{}'.format(dot), '')  # remove the dot from
         regex_str = "^(?:(?P<char>" + chars + ")(" + dot + "))*(?P<last_char>" + chars + ")$"
         return regex_str
 
