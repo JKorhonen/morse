@@ -1,8 +1,7 @@
 # Morse - English to Morse code converter
-[![Build Status](https://travis-ci.org/JKorhonen/morse-coder.svg?branch=master)](https://travis-ci.org/JKorhonen/morse-coder)
+[![Build Status](https://travis-ci.org/JKorhonen/morse.svg?branch=master)](https://travis-ci.org/JKorhonen/morse)
 
-
-A Simple library that provides basic facilities to convert English text to morse code or vice versa.
+Simple library that provides basic facilities to convert English text to morse code or vice versa.
 
 Currently, the library has some limitations how you can convert Morse code to English. We assume that Morse Code is 
 structured following these rules:
